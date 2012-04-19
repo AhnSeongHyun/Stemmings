@@ -11,7 +11,7 @@ Stemmings is English specific Stemmer Open Source program. Programed by JAVA.
  
 ## Usage
 
-Stemmings.jar <text file path> <rule dictionary path> <result file path>
+Stemmings.jar "<text file path>" <rule dictionary path> <result file path>
 
 
 ## Configure Rule Dictionary
