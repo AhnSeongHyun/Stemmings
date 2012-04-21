@@ -11,7 +11,7 @@ public class StemmingService
 		TextTermReader termReader = new TextTermReader();
 		StemmingRuleReader stemRuleReader = new StemmingRuleReader();
 
-		List<String> rawTerms = termReader.ReadTextTerm(path.getTextFilePath());
+		termReader.ReadTextTerm(path.getTextFilePath());
 		List<String> rawRules = stemRuleReader.ReadRule(path.getRuleFilePath());
 
 		String filePath = path.getResultFilePath();
@@ -20,13 +20,13 @@ public class StemmingService
 		int i = 0;
 		String rawTerm = null;
 
-		for (i = 0; i < rawTerms.size(); i++)
+		for (i = 0; i < termReader.bodyTermList.size(); i++)
 		{
-			rawTerm = rawTerms.get(i);
+			rawTerm = termReader.bodyTermList.get(i);
 
 			for (String rawRule : rawRules)
 			{
-				if (rawTerm.contains(rawRule))
+				if (containRule(rawTerm, rawRule))
 				{
 					stemmedTerms.add(applyRuleToTerm(rawTerm, rawRule));
 					break;
@@ -42,13 +42,15 @@ public class StemmingService
 
 		ResultWriter resultWriter = new ResultWriter();
 
-		resultWriter.writeStmmedTerm(stemmedTerms, filePath);
+		resultWriter.writeStmmedTerm(termReader, stemmedTerms, filePath);
 
 	}
 
-	private static String applyRuleToTerm(String term, String rule)
+	private  String applyRuleToTerm(String term, String rule)
 	{
-		// TODO : NEED REFINE
+ 
+
+		String appliedTerm = null;
 
 		int ruleLen = rule.length();
 
@@ -64,10 +66,9 @@ public class StemmingService
 
 		sb = sb.reverse();
 
-		if (sb.toString().equals(rule))
+		if (isEqualRule(sb.toString(), rule))
 		{
-
-			System.out.println("term:" + term + "   rule : " + rule);
+ 
 
 			sb.delete(0, sb.length());
 
@@ -78,11 +79,59 @@ public class StemmingService
 
 			}
 
-			System.out.println("stemmed : " + sb.toString());
+		
+			appliedTerm = sb.toString();
+		}
+		else
+		{
 
+			appliedTerm = term;
 		}
 
-		return sb.toString();
+		return appliedTerm;
 
+	}
+	
+	private boolean containRule(String inputTerm, String rule)
+	{
+		boolean isContain = false;
+		
+		 
+		if (inputTerm.contains(rule.toLowerCase()))
+		{
+			isContain = true;
+
+		}
+		else if (inputTerm.contains(rule.toUpperCase()))
+		{
+			isContain = true;
+		}
+		else
+		{
+			isContain = false;
+		}
+		return isContain;
+	}
+	
+	
+	private boolean isEqualRule(String inputGrams, String rule)
+	{
+		boolean isEqual = false;
+		
+		 
+		if (inputGrams.equals(rule.toLowerCase()))
+		{
+			isEqual = true;
+
+		}
+		else if (inputGrams.equals(rule.toUpperCase()))
+		{
+			isEqual = true;
+		}
+		else
+		{
+			isEqual = false;
+		}
+		return isEqual;
 	}
 }

@@ -8,12 +8,14 @@ import java.util.List;
 
 
 public class StemmingRuleReader
+
 {
+	 
 
 	List<String> ReadRule(String ruleFilePath)
 	{
-
 		List<String> rawRuleList = Collections.emptyList();
+
 
 		BufferedReader brd = null;
 		String rLine = null;

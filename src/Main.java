@@ -31,6 +31,7 @@ public class Main
 		
 		StemmingService stem = new StemmingService();
 		stem.stemming(path);
+
 		
 	}
 
